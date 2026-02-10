@@ -15,14 +15,17 @@
 {{ "{%" }} block title {{ "%}" }}{{ "{{" }} title {{ "}}" }}{{ "{%" }} endblock {{ "%}" }}
 
 {{ "{%" }} block content {{ "%}" }}
+
     &lt;h1&gt;{{ "{{" }} title {{ "}}" }}&lt;/h1&gt;
 
     {{ "{%" }} for article in articles {{ "%}" }}
-        &lt;article&gt;
-            &lt;h2&gt;{{ "{{" }} article.title {{ "}}" }}&lt;/h2&gt;
-            &lt;p&gt;{{ "{{" }} article.content {{ "}}" }}&lt;/p&gt;
-        &lt;/article&gt;
+
+    &lt;article&gt;
+        &lt;h2&gt;{{ "{{" }} article.title {{ "}}" }}&lt;/h2&gt;
+        &lt;p&gt;{{ "{{" }} article.content {{ "}}" }}&lt;/p&gt;
+    &lt;/article&gt;
     {{ "{%" }} endfor {{ "%}" }}
+
 {{ "{%" }} endblock {{ "%}" }}</code></pre>
             </div>
         </div>
