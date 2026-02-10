@@ -22,7 +22,7 @@
     <dependency>
       <groupId>io.github.kainovaii</groupId>
       <artifactId>spark-core</artifactId>
-      <version>1.0.7</version>
+      <version>1.0.9</version>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>

@@ -1,10 +1,8 @@
 package fr.kainovaii.spark.app.controllers;
 
-import fr.kainovaii.core.security.csrf.CsrfProtect;
 import fr.kainovaii.core.web.route.methods.GET;
 import fr.kainovaii.core.web.controller.BaseController;
 import fr.kainovaii.core.web.controller.Controller;
-import fr.kainovaii.core.web.route.methods.POST;
 import spark.Request;
 import spark.Response;
 
