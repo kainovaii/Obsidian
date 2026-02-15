@@ -1,0 +1,283 @@
+<section id="live-components">
+    <h2 class="text-3xl font-bold text-white mb-6">LiveComponents</h2>
+
+    <p class="text-gray-400 mb-6">
+        Build reactive, real-time interfaces without writing JavaScript. Server-side components with automatic state synchronization.
+    </p>
+
+    <div class="space-y-6">
+        <div>
+            <div class="text-gray-400 text-sm mb-3">Creating a component</div>
+            <div class="bg-zinc-950 border border-zinc-800 p-6">
+                <pre class="line-numbers"><code class="language-java">@LiveComponent
+public class Counter extends LiveComponent
+{
+    @State
+    private int count = 0;
+
+    public void increment() {
+        count++;
+    }
+
+    public void decrement() {
+        count--;
+    }
+
+    public int getCount() { return count; }
+
+    @Override
+    public String template() {
+        return "components/counter.html";
+    }
+}</code></pre>
+            </div>
+        </div>
+
+        <div>
+            <div class="text-gray-400 text-sm mb-3">Component template (counter.html)</div>
+            <div class="bg-zinc-950 border border-zinc-800 p-6">
+                <pre class="line-numbers"><code class="language-html">&lt;div live:id="{{ "{{" }} _id {{ "}}" }}"&gt;
+    &lt;h2&gt;Count: {{ "{{" }} count {{ "}}" }}&lt;/h2&gt;
+
+    &lt;button live:click="increment"&gt;+ Increment&lt;/button&gt;
+    &lt;button live:click="decrement"&gt;- Decrement&lt;/button&gt;
+
+    &lt;div live:loading&gt;Updating...&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+            </div>
+        </div>
+
+        <div>
+            <div class="text-gray-400 text-sm mb-3">Using in templates</div>
+            <div class="bg-zinc-950 border border-zinc-800 p-6">
+                <pre class="line-numbers"><code class="language-twig">{{ "{%" }} extends "layout/base.html" {{ "%}" }}
+
+{{ "{%" }} block content {{ "%}" }}
+
+    &lt;h1&gt;My Page&lt;/h1&gt;
+    {{ "{{" }} component('Counter') | raw {{ "}}" }}
+
+{{ "{%" }} endblock {{ "%}" }}</code></pre>
+            </div>
+        </div>
+
+        <div>
+            <div class="text-gray-400 text-sm mb-3">Actions with parameters</div>
+            <div class="bg-zinc-950 border border-zinc-800 p-6">
+                <pre class="line-numbers"><code class="language-java">@LiveComponent
+public class TodoList extends LiveComponent
+{
+    @State
+    private List&lt;Todo&gt; todos = new ArrayList&lt;&gt;();
+
+    public void toggleTodo(int id) {
+        todos.stream()
+            .filter(t -&gt; t.id == id)
+            .findFirst()
+            .ifPresent(t -&gt; t.completed = !t.completed);
+    }
+
+    public void deleteTodo(int id) {
+        todos.removeIf(t -&gt; t.id == id);
+    }
+
+    public List&lt;Todo&gt; getTodos() { return todos; }
+
+    @Override
+    public String template() {
+        return "components/todo-list.html";
+    }
+}</code></pre>
+            </div>
+        </div>
+
+        <div>
+            <div class="text-gray-400 text-sm mb-3">Template with parameters</div>
+            <div class="bg-zinc-950 border border-zinc-800 p-6">
+                <pre class="line-numbers"><code class="language-html">&lt;div live:id="{{ "{{" }} _id {{ "}}" }}"&gt;
+    {{ "{%" }} for todo in todos {{ "%}" }}
+        &lt;div&gt;
+            &lt;span&gt;{{ "{{" }} todo.text {{ "}}" }}&lt;/span&gt;
+            &lt;button live:click="toggleTodo({{ "{{" }} todo.id {{ "}}" }})"&gt;
+                Toggle
+            &lt;/button&gt;
+            &lt;button live:click="deleteTodo({{ "{{" }} todo.id {{ "}}" }})"&gt;
+                Delete
+            &lt;/button&gt;
+        &lt;/div&gt;
+    {{ "{%" }} endfor {{ "%}" }}
+
+&lt;/div&gt;</code></pre>
+            </div>
+        </div>
+
+        <div>
+            <div class="text-gray-400 text-sm mb-3">Real-time search with live:model</div>
+            <div class="bg-zinc-950 border border-zinc-800 p-6">
+        <pre class="line-numbers"><code class="language-java">@LiveComponent
+public class SearchFilter extends LiveComponent
+{
+    @State
+    private String search = "";
+
+    // Private data (not exposed to template)
+    private final List&lt;String&gt; items = List.of(
+        "React", "Vue", "Angular", "Svelte",
+        "Node.js", "Django", "Spring Boot"
+    );
+
+    // Computed property - accessible in template
+    public List&lt;String&gt; getFilteredItems() {
+        if (search == null || search.isEmpty()) {
+            return items;
+        }
+        return items.stream()
+            .filter(item -&gt; item.toLowerCase()
+                .contains(search.toLowerCase()))
+            .collect(Collectors.toList());
+    }
+
+    public String getSearch() { return search; }
+
+    @Override
+    public String template() {
+        return "components/search.html";
+    }
+}</code></pre>
+            </div>
+        </div>
+
+        <div>
+            <div class="text-gray-400 text-sm mb-3">Search template with auto-update</div>
+            <div class="bg-zinc-950 border border-zinc-800 p-6">
+                <pre class="line-numbers"><code class="language-html">&lt;div live:id="{{ "{{" }} _id {{ "}}" }}"&gt;
+    &lt;!-- Updates server state as you type --&gt;
+    &lt;input
+        live:model="search"
+        live:debounce="300"
+        type="text"
+        placeholder="Search..."
+        value="{{ "{{" }} search {{ "}}" }}"
+    &gt;
+
+    &lt;div&gt;{{ "{{" }} filteredItems.size() {{ "}}" }} results&lt;/div&gt;
+
+    {{ "{%" }} for item in filteredItems {{ "%}" }}
+
+        &lt;div&gt;{{ "{{" }} item {{ "}}" }}&lt;/div&gt;
+    {{ "{%" }} endfor {{ "%}" }}
+
+&lt;/div&gt;</code></pre>
+            </div>
+        </div>
+
+        <div>
+            <div class="text-gray-400 text-sm mb-3">Auto-refresh with live:poll</div>
+            <div class="bg-zinc-950 border border-zinc-800 p-6">
+                <pre class="line-numbers"><code class="language-java">@LiveComponent
+public class Dashboard extends LiveComponent
+{
+    @State
+    private int activeUsers = 0;
+
+    public void loadInitialData() {
+        activeUsers = userService.getActiveCount();
+    }
+
+    public void refreshStats() {
+        activeUsers = userService.getActiveCount();
+    }
+
+    public int getActiveUsers() { return activeUsers; }
+
+    @Override
+    public String template() {
+        return "components/dashboard.html";
+    }
+}</code></pre>
+            </div>
+        </div>
+
+        <div>
+            <div class="text-gray-400 text-sm mb-3">Dashboard template with polling</div>
+            <div class="bg-zinc-950 border border-zinc-800 p-6">
+                <pre class="line-numbers"><code class="language-html">&lt;div
+    live:id="{{ "{{" }} _id {{ "}}" }}"
+    live:init="loadInitialData"
+    live:poll.5s="refreshStats"
+&gt;
+    &lt;h2&gt;Active Users: {{ "{{" }} activeUsers {{ "}}" }}&lt;/h2&gt;
+    &lt;p&gt;Auto-updates every 5 seconds&lt;/p&gt;
+
+    &lt;div live:loading.class="opacity-100" class="opacity-0"&gt;
+        Updating...
+    &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+            </div>
+        </div>
+
+        <div>
+            <div class="text-gray-400 text-sm mb-3">Available directives</div>
+            <div class="bg-zinc-950 border border-zinc-800 p-6">
+                <pre class="line-numbers"><code class="language-html">&lt;!-- Click actions --&gt;
+&lt;button live:click="save"&gt;Save&lt;/button&gt;
+&lt;button live:click="delete({{ "{{" }} id {{ "}}" }})"&gt;Delete&lt;/button&gt;
+
+&lt;!-- Two-way binding --&gt;
+&lt;input live:model="search" type="text"&gt;
+&lt;input live:model="email" live:blur type="email"&gt;
+&lt;input live:model="username" live:lazy type="text"&gt;
+&lt;input live:model="query" live:debounce="500" type="text"&gt;
+
+&lt;!-- Auto-refresh --&gt;
+&lt;div live:poll="5s"&gt;...&lt;/div&gt;
+&lt;div live:poll.10s="refreshData"&gt;...&lt;/div&gt;
+
+&lt;!-- Lifecycle --&gt;
+&lt;div live:init="loadData"&gt;...&lt;/div&gt;
+
+&lt;!-- Confirmation --&gt;
+&lt;button live:confirm="Are you sure?"&gt;Delete&lt;/button&gt;
+
+&lt;!-- Loading states --&gt;
+&lt;div live:loading&gt;Loading...&lt;/div&gt;
+&lt;div live:loading.class="opacity-100"&gt;...&lt;/div&gt;
+&lt;button live:loading.add="opacity-50"&gt;Save&lt;/button&gt;</code></pre>
+            </div>
+        </div>
+
+        <div>
+            <div class="text-gray-400 text-sm mb-3">Setup (required)</div>
+            <div class="bg-zinc-950 border border-zinc-800 p-6">
+        <pre class="line-numbers"><code class="language-java">// In your controller
+@Controller
+public class DashboardController extends BaseController
+{
+    @Before(SessionMiddleware.class)
+    @GET("/dashboard")
+    public Object dashboard(Request req, Response res)
+    {
+        return render("dashboard.html", Map.of());
+    }
+}</code></pre>
+            </div>
+        </div>
+
+        <div>
+            <div class="text-gray-400 text-sm mb-3">Include JavaScript in layout</div>
+            <div class="bg-zinc-950 border border-zinc-800 p-6">
+                <pre class="line-numbers"><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;My App&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    {{ "{%" }} block content {{ "%}" }}{{ "{%" }} endblock {{ "%}" }}
+
+    &lt;script src="/js/obsidian-components.js"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+            </div>
+        </div>
+    </div>
+</section>
