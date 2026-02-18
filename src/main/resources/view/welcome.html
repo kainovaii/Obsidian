@@ -1,0 +1,23 @@
+{% extends "view/layout/front.html" %}
+{% block content %}
+<div class="w-full max-w-sm text-center">
+    <h1 class="text-4xl font-bold text-white tracking-tight mb-2">
+        Obsidian_<span class="text-red-500 animate-blink">|</span>
+    </h1>
+    <p class="text-xs text-zinc-600 mb-12">Java Web Framework</p>
+    <div class="bg-zinc-950 border border-zinc-900 px-6 py-4 mb-8 flex items-center justify-center gap-3">
+        <span class="text-red-500 animate-pulse-dot">●</span>
+        <span class="text-sm text-zinc-400">Application is running</span>
+    </div>
+    <div class="grid grid-cols-2 gap-px bg-zinc-900 mb-12">
+        <a href="https://obsidian.kainovaii.dev/docs" class="card-link bg-black px-6 py-4 hover:bg-zinc-950 transition-colors flex items-center justify-between">
+            <span class="text-sm text-zinc-400 hover:text-white transition-colors">Docs</span>
+            <span class="text-red-500 card-arrow">→</span>
+        </a>
+        <a href="https://github.com/obsidian-framework/obsidian-skeleton" class="card-link bg-black px-6 py-4 hover:bg-zinc-950 transition-colors flex items-center justify-between">
+            <span class="text-sm text-zinc-400 hover:text-white transition-colors">GitHub</span>
+            <span class="text-red-500 card-arrow">→</span>
+        </a>
+    </div>
+</div>
+{% endblock %}

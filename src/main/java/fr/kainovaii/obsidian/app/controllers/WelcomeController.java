@@ -9,11 +9,11 @@ import spark.Response;
 import java.util.Map;
 
 @Controller
-public class HomeController extends BaseController
+public class WelcomeController extends BaseController
 {
     @GET(value = "/", name = "site.home")
     private Object homepage(Request req, Response res)
     {
-        return render("landing/home.html", Map.of());
+        return render("welcome.html", Map.of());
     }
 }
