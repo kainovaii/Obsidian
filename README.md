@@ -24,8 +24,7 @@ The skeleton includes a pre-configured project structure, build scripts, and exa
 ```bash
 git clone https://github.com/obsidian-framework/obsidian.git
 cd skeleton
-mvn clean package
-mvn exec:java
+mvn clean package exec:java
 ```
 
 ## License
