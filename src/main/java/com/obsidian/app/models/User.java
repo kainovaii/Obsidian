@@ -1,8 +1,8 @@
 package com.obsidian.app.models;
 
+import com.obsidian.core.database.orm.model.Model;
+import com.obsidian.core.database.orm.model.Table;
 import com.obsidian.core.security.user.UserDetails;
-import org.javalite.activejdbc.annotations.Table;
-import org.javalite.activejdbc.Model;
 /**
  * Represents a user in the application.
  * Maps to the "users" table via ActiveJDBC (ActiveRecord pattern).
@@ -11,7 +11,8 @@ import org.javalite.activejdbc.Model;
  * Fields are read from the database row via getString() / getLong() — no column annotations needed.
  */
 @Table("users")
-public class User extends Model implements UserDetails {
+public class User extends Model implements UserDetails
+{
     /**
      * Returns the primary key of the user.
      */

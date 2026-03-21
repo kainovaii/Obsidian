@@ -14,8 +14,8 @@ import com.obsidian.core.security.user.UserDetailsServiceImpl;
  * Only one implementation should exist in the application.
  */
 @UserDetailsServiceImpl
-public class AppUserDetailsService implements UserDetailsService {
-
+public class AppUserDetailsService implements UserDetailsService
+{
     @Inject
     private UserRepository userRepository;
 

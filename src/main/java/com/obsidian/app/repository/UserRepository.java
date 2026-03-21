@@ -1,6 +1,7 @@
 package com.obsidian.app.repository;
 
 import com.obsidian.app.models.User;
+import com.obsidian.core.database.orm.repository.BaseRepository;
 import com.obsidian.core.di.annotations.Repository;
 
 /**
@@ -10,7 +11,11 @@ import com.obsidian.core.di.annotations.Repository;
  * @Repository registers this class in Obsidian's dependency injection container.
  */
 @Repository
-public class UserRepository {
+public class  UserRepository extends BaseRepository<User>
+{
+    public UserRepository() {
+        super(User.class);
+    }
 
     /**
      * Finds a user by their primary key.
@@ -20,7 +25,7 @@ public class UserRepository {
      * @return the matching User, or null if not found
      */
     public User findById(Object id) {
-        return User.findById(id);
+        return findBy("id", id);
     }
 
     /**
@@ -31,7 +36,7 @@ public class UserRepository {
      * @return the matching User, or null if not found
      */
     public User findByUsername(String username) {
-        return (User) User.findFirst("username = ?", username);
+        return findBy("username", username);
     }
 
     /**
@@ -41,6 +46,6 @@ public class UserRepository {
      * @return the matching User, or null if not found
      */
     public User findByEmail(String email) {
-        return (User) User.findFirst("email = ?", email);
+        return findBy("email", email);
     }
 }
