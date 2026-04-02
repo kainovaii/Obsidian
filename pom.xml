@@ -14,15 +14,11 @@
   </properties>
   <repositories>
     <repository>
-      <id>jitpack.io</id>
-      <url>https://jitpack.io</url>
-    </repository>
-  </repositories>
   <dependencies>
     <dependency>
-      <groupId>com.github.obsidian-framework</groupId>
+      <groupId>com.obsidian-java</groupId>
       <artifactId>core</artifactId>
-      <version>v3.7.0</version>
+      <version>3.8.0</version>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
